@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify, send_file
+from flask_cors import CORS  # Import flask_cors to handle CORS
 import os
 import yt_dlp
 import tempfile
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "YouTube MP3 Downloader Server is Running!"
+# Enable CORS for all routes and allow your extension's origin
+CORS(app, origins=["chrome-extension://jemmamfoekigdclkfoghiabmnbmhglio", "https://ytmp3-ae81.onrender.com"])
 
 @app.route("/download", methods=["POST"])
 def handle_download():
@@ -19,7 +19,6 @@ def handle_download():
         return jsonify({"status": "error", "message": "No URL provided"}), 400
 
     try:
-        # Create a temporary directory for the download
         with tempfile.TemporaryDirectory() as temp_dir:
             ydl_opts = {
                 "format": "bestaudio/best",
