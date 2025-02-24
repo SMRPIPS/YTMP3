@@ -1,6 +1,6 @@
 import os
 import sys
-import urllib.request
+import requests
 import yt_dlp
 import tempfile
 from flask import Flask, request, jsonify, send_file
@@ -13,19 +13,29 @@ CORS(app, origins=["chrome-extension://jemmamfoekigdclkfoghiabmnbmhglio", "https
 
 # FFmpeg GitHub Release URL
 FFMPEG_URL = "https://github.com/SMRPIPS/YTMP3/releases/download/v1.0.0/ffmpeg.exe"
-FFMPEG_PATH = "./ffmpeg.exe"  # Path to store FFmpeg
+FFMPEG_PATH = "./ffmpeg.exe"  # Path where FFmpeg should be saved
 
 # Function to download FFmpeg if missing
 def download_ffmpeg():
     if not os.path.isfile(FFMPEG_PATH):
         try:
             print("Downloading FFmpeg from GitHub Release...")
-            urllib.request.urlretrieve(FFMPEG_URL, FFMPEG_PATH)
-            print("FFmpeg downloaded successfully!")
-        except urllib.error.HTTPError as e:
-            print(f"Failed to download FFmpeg: {e}")
+            
+            # Use requests to handle redirects
+            response = requests.get(FFMPEG_URL, stream=True, allow_redirects=True)
+            
+            if response.status_code == 200:
+                with open(FFMPEG_PATH, "wb") as f:
+                    for chunk in response.iter_content(chunk_size=1024):
+                        f.write(chunk)
+                print("FFmpeg downloaded successfully!")
+            else:
+                raise Exception(f"Failed to download FFmpeg. HTTP Status: {response.status_code}")
+
+        except Exception as e:
+            print(f"Error downloading FFmpeg: {e}")
             print("Ensure the URL is correct and the file exists in the GitHub Release.")
-            sys.exit(1)  # Stop the server if FFmpeg is missing
+            sys.exit(1)  # Stop the server if FFmpeg download fails
 
 # Check and download FFmpeg
 download_ffmpeg()
