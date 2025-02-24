@@ -40,6 +40,10 @@ def download_ffmpeg():
 # Check and download FFmpeg
 download_ffmpeg()
 
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"status": "success", "message": "Server is running!"}), 200
+
 @app.route("/download", methods=["POST"])
 def handle_download():
     """ Download and convert YouTube video to MP3. """
