@@ -15,7 +15,7 @@ CORS(app, origins=["chrome-extension://jemmamfoekigdclkfoghiabmnbmhglio", "https
 FFMPEG_URL = "https://github.com/SMRPIPS/YTMP3/releases/download/v1.0.0/ffmpeg.exe"
 FFMPEG_PATH = "./ffmpeg.exe"  # Path where FFmpeg should be saved
 
-# Hardcoded Cookies (Replace with your cookies in JSON format)
+# Hardcoded Cookies (replace with your actual cookies string)
 COOKIES = {
     "__Secure-1PAPISID": "fPmedbRnTKEzqx0V/AxQeiGrvqP2VJ-OTh",
     "__Secure-1PSID": "g.a000uAgZs6_P8881lIKNFF0pOvr3INMTvbmKhYzEPw_L03b2_TltyUnh-4c0zq0LhBYMoUCNUwACgYKAUoSARESFQHGX2Mi76v_v08Rkjch2DZzoF9yghoVAUF8yKpUASxVGYHAjdjhez1wNdSN0076",
