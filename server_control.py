@@ -15,17 +15,16 @@ CORS(app, origins=["chrome-extension://jemmamfoekigdclkfoghiabmnbmhglio", "https
 FFMPEG_URL = "https://github.com/SMRPIPS/YTMP3/releases/download/v1.0.0/ffmpeg.exe"
 FFMPEG_PATH = "./ffmpeg.exe"  # Path where FFmpeg should be saved
 
-# Spoofed headers to mimic a real browser request
-STEALTH_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Referer": "https://www.youtube.com/",
-    "Accept-Encoding": "gzip, deflate, br",
-    "DNT": "1",
-    "Upgrade-Insecure-Requests": "1",
-}
+# **Step 1: Auto-Update yt-dlp**
+def update_yt_dlp():
+    try:
+        print("Updating yt-dlp to the latest version...")
+        os.system("pip install --upgrade yt-dlp")
+        print("yt-dlp updated successfully!")
+    except Exception as e:
+        print(f"Failed to update yt-dlp: {e}")
 
-# Function to download FFmpeg if missing
+# **Step 2: Download FFmpeg if missing**
 def download_ffmpeg():
     if not os.path.isfile(FFMPEG_PATH):
         try:
@@ -41,9 +40,10 @@ def download_ffmpeg():
                 raise Exception(f"Failed to download FFmpeg. HTTP Status: {response.status_code}")
         except Exception as e:
             print(f"Error downloading FFmpeg: {e}")
-            sys.exit(1)  # Stop the server if FFmpeg download fails
+            sys.exit(1)
 
-# Check and download FFmpeg
+# **Run updates on startup**
+update_yt_dlp()
 download_ffmpeg()
 
 @app.route("/", methods=["GET"])
@@ -65,9 +65,7 @@ def handle_download():
                 "format": "bestaudio/best",
                 "outtmpl": os.path.join(temp_dir, "%(title)s.%(ext)s"),
                 "ffmpeg_location": FFMPEG_PATH,
-                "noplaylist": True,  # Avoid processing entire playlists
-                "cookiefile": "-",  # Use cookie headers instead of file
-                "http_headers": STEALTH_HEADERS,  # Use spoofed headers
+                "noplaylist": True,
                 "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3", "preferredquality": "192"}],
             }
 
