@@ -15,28 +15,14 @@ CORS(app, origins=["chrome-extension://jemmamfoekigdclkfoghiabmnbmhglio", "https
 FFMPEG_URL = "https://github.com/SMRPIPS/YTMP3/releases/download/v1.0.0/ffmpeg.exe"
 FFMPEG_PATH = "./ffmpeg.exe"  # Path where FFmpeg should be saved
 
-# Hardcoded Cookies (replace with your actual cookies string)
-COOKIES = {
-    "__Secure-1PAPISID": "fPmedbRnTKEzqx0V/AxQeiGrvqP2VJ-OTh",
-    "__Secure-1PSID": "g.a000uAgZs6_P8881lIKNFF0pOvr3INMTvbmKhYzEPw_L03b2_TltyUnh-4c0zq0LhBYMoUCNUwACgYKAUoSARESFQHGX2Mi76v_v08Rkjch2DZzoF9yghoVAUF8yKpUASxVGYHAjdjhez1wNdSN0076",
-    "__Secure-1PSIDCC": "AKEyXzVDWO_Bggn8KQFM61-On_PKsu3FpO38_DaJ-2Pq8HpLajt9TaO1ka0q79lFb2isireFuSmS",
-    "__Secure-1PSIDTS": "sidts-CjEBEJ3XV1rVt_lEslydKTAS2bnFezMWJVJlbMkGxK8ZQB3JyI6-BQtY_GhQvz2c2gwQEAA",
-    "__Secure-3PAPISID": "fPmedbRnTKEzqx0V/AxQeiGrvqP2VJ-OTh",
-    "__Secure-3PSID": "g.a000uAgZs6_P8881lIKNFF0pOvr3INMTvbmKhYzEPw_L03b2_TltiGIcZNfcGvSET1Uk3zN8hgACgYKAXQSARESFQHGX2MiD5Fd-CnEmlvy3VdufQGaRBoVAUF8yKqXoXMm7iD5rFLYrcsmMbsv0076",
-    "__Secure-3PSIDCC": "AKEyXzX4Hd83-OLkT9nhqjOR9E8ra0YFozQ_P4XFAl4tODJIbZw_hKKZRn92UQzYLT44JTAh9xc",
-    "__Secure-3PSIDTS": "sidts-CjEBEJ3XV1rVt_lEslydKTAS2bnFezMWJVJlbMkGxK8ZQB3JyI6-BQtY_GhQvz2c2gwQEAA",
-    "__Secure-YEC": "CgtUNzBiN1FPRzFGWSjA77C4BjIKCgJHQhIEGgAgPA%3D%3D",
-    "_ga": "GA1.1.20236561.1730022507",
-    "_ga_VCGEPY40VB": "GS1.1.1730022507.1.1.1730022913.54.0.0",
-    "APISID": "wx4sfcRll3RIEsXN/AmZ2-HOMT2nl63w1J",
-    "HSID": "A_BbHeUv8bzRVQ_N2",
-    "LOGIN_INFO": "AFmmF2swRQIhAK4UXJsQYSrbYRDfAaz6sLC6T-dtNfWKb9Dy34A9FYF1AiADUQT0ewab4c4u6l-uVKjV3M1bOwqgc7xIuUQn9RIxpw:QUQ3MjNmd0YxOVJESW9mR2UyWlZ3N3JxSnE3dGs4RDZ0V2xBNFBrM0Ezd3drZHEzSDRXa2xydHRFZm4xWkNTZTNxYVVOT2d5aVdVdlRSWWpKR01nY1NpUzF4RFplQ3prMi03MWpfM3FFYkVwdEhnTEY0djFncU54MFVyOFA2d1o1VUU4UjZYeDdrZFFyZlNXaTRLYTBIUG5JUmVRQmM0ejBvQzJUMkZ2Ynd2TE5LVkNHRmV5ckRIVlhGMDBBSkFLOUpQeTNXQnA0ZUphYWNmc21Sd3JEQm5UVGpCNkRFOGdvdw==",
-    "NID": "518=hQ2stLJUIfNut696EYHwfKITa4Xk5eSqHJtLZIziNcR7rqbOC1Vi7mtjxLrY8mHNbZF1NNmOYd0aH7BqcMIsMkyPRH8bao20jLoUg4PSfyDxfRORguhiL4nzJnmNZvwQr4W1_MKET2okh46mA7axmI-7-6inTHlaVs13TwSpHy-T2Cr1Y1dke5lun1oStTu7LtKvqg2KqMy2Jl-m6-TLuRaM8HguI76KmfS3kAMwcnwjH5h3iA9Kblhvc8q7sUInDhwr9wg",
-    "PREF": "f7=4100&tz=Europe.London&f6=400&f5=20000&repeat=NONE",
-    "SAPISID": "fPmedbRnTKEzqx0V/AxQeiGrvqP2VJ-OTh",
-    "SID": "g.a000uAgZs6_P8881lIKNFF0pOvr3INMTvbmKhYzEPw_L03b2_TltUbh_0Ip2jhsPJ6uNuBa-7AACgYKATQSARESFQHGX2MiPwYr7RJe-_fze2r5UT2tqRoVAUF8yKr2mLriZ379a66pxqQaz0iF0076",
-    "SIDCC": "AKEyXzX8XT_-BiQ9z_fYRRMZ2X4Wu3KYlHZJ_N1vIpBacgYw8VnnDTwBZx3tU1wfdtGHnh1REGtG",
-    "SSID": "AwNWzvqTxI9qi-nSn"
+# Spoofed headers to mimic a real browser request
+STEALTH_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.youtube.com/",
+    "Accept-Encoding": "gzip, deflate, br",
+    "DNT": "1",
+    "Upgrade-Insecure-Requests": "1",
 }
 
 # Function to download FFmpeg if missing
@@ -78,8 +64,10 @@ def handle_download():
             ydl_opts = {
                 "format": "bestaudio/best",
                 "outtmpl": os.path.join(temp_dir, "%(title)s.%(ext)s"),
-                "ffmpeg_location": FFMPEG_PATH,  # Use the downloaded FFmpeg
-                "cookies": COOKIES,  # Pass cookies directly (instead of cookies.txt)
+                "ffmpeg_location": FFMPEG_PATH,
+                "noplaylist": True,  # Avoid processing entire playlists
+                "cookiefile": "-",  # Use cookie headers instead of file
+                "http_headers": STEALTH_HEADERS,  # Use spoofed headers
                 "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3", "preferredquality": "192"}],
             }
 
