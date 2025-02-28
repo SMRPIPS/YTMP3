@@ -5,26 +5,28 @@ import yt_dlp
 import tempfile
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from yt_dlp_stealth import stealth  # Use stealth mode
 
 app = Flask(__name__)
 CORS(app, origins=["chrome-extension://jemmamfoekigdclkfoghiabmnbmhglio", "https://ytmp3-ae81.onrender.com"])
 
-# FFmpeg GitHub Release URL
+# 🔹 FFmpeg GitHub Release URL
 FFMPEG_URL = "https://github.com/SMRPIPS/YTMP3/releases/download/v1.0.0/ffmpeg.exe"
 FFMPEG_PATH = "./ffmpeg.exe"
 
-# 🔹 Manually add cookies from your **own browser** here (Extracted via EditThisCookie)
-YOUTUBE_COOKIES = {
+# 🔹 Manually add cookies from **EditThisCookie**
+YOUTUBE_COOKIES = "PREF=f7=100; VISITOR_INFO1_LIVE=XX1234abc; YSC=abc123;"  # Replace with your real cookies
+
+# 🔹 User-Agent (Mimics a real browser)
+HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Cookie": "PREF=f7=100; VISITOR_INFO1_LIVE=XX1234abc; YSC=abc123;",
+    "Cookie": YOUTUBE_COOKIES,
 }
 
-# Step 1: Auto-Update yt-dlp & Install Stealth
+# 🔹 Step 1: Auto-Update yt-dlp
 def update_yt_dlp():
-    os.system("pip install --upgrade yt-dlp yt-dlp-stealth")
+    os.system("pip install --upgrade yt-dlp")
 
-# Step 2: Download FFmpeg if missing
+# 🔹 Step 2: Download FFmpeg if missing
 def download_ffmpeg():
     if not os.path.isfile(FFMPEG_PATH):
         try:
@@ -42,7 +44,7 @@ def download_ffmpeg():
             print(f"Error downloading FFmpeg: {e}")
             sys.exit(1)
 
-# Run updates on startup
+# 🔹 Run updates on startup
 update_yt_dlp()
 download_ffmpeg()
 
@@ -65,12 +67,12 @@ def handle_download():
                 "outtmpl": os.path.join(temp_dir, "%(title)s.%(ext)s"),
                 "ffmpeg_location": FFMPEG_PATH,
                 "noplaylist": True,
-                "http_headers": YOUTUBE_COOKIES,  # Pass cookies
+                "cookie": YOUTUBE_COOKIES,  # Pass cookies
+                "http_headers": HEADERS,  # Pass headers
                 "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3", "preferredquality": "192"}],
             }
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                stealth(ydl)  # Enable stealth mode
                 ydl.download([youtube_url])
 
             return jsonify({"status": "success", "message": "Download started"}), 200
